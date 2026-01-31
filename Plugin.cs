@@ -28,7 +28,7 @@ namespace JellyCachePlugin
 
         public override string Name => "Jelly Cache Manager";
 
-        public override Guid Id => Guid.Parse("12345678-1234-1234-1234-123456789abc");
+        public override Guid Id => Guid.Parse("f5c8d4e3-2b1a-4c5d-8e9f-1a2b3c4d5e6f");
 
         public override string Description => "Monitors and manages Jellyfin cache directories.";
 

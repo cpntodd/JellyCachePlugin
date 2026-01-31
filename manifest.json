@@ -1,5 +1,5 @@
 {
-  "guid": "12345678-1234-1234-1234-123456789abc",
+  "guid": "f5c8d4e3-2b1a-4c5d-8e9f-1a2b3c4d5e6f",
   "name": "Jelly Cache Manager",
   "description": "Monitors and manages Jellyfin cache directories.",
   "overview": "Manage your cache",
@@ -11,8 +11,8 @@
       "changelog": "Initial release of Jelly Cache Manager plugin\n- Cache monitoring for all Jellyfin directories\n- Automatic cleanup based on size and age rules\n- Admin UI for configuration and manual operations\n- Scheduled background cleanup service\n- Comprehensive logging\n- Safety features to avoid deleting active files",
       "targetAbi": "10.11.0.0",
       "sourceUrl": "https://github.com/cpntodd/JellyCachePlugin/releases/download/v1.0.0/JellyCachePlugin.zip",
-      "checksum": "b648c4caf25f05da7919b12e24d534e8",
-      "timestamp": "2026-01-31T00:00:00Z"
+      "checksum": "74dfab9d1de51bc74160144b40357df5",
+      "timestamp": "2026-01-31T04:17:41Z"
     }
   ]
 }
