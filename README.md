@@ -92,6 +92,8 @@ For easier distribution and "instant use" via Jellyfin's plugin catalog:
 1. Build the plugin in Release mode: `dotnet build -c Release`
 2. The DLL will be in `bin/Release/net9.0/JellyCachePlugin.dll`
 3. Create a ZIP archive containing the DLL and any additional files (e.g., `JellyCachePlugin.zip`)
+4. Compute the MD5 checksum: `md5sum JellyCachePlugin.zip`
+5. Create or update `manifest.json` with the version details, source URL, checksum, and timestamp.
 
 Automated releases are available via GitHub Actions on tagged commits (e.g., `v1.0.0`).
 
@@ -100,9 +102,12 @@ Automated releases are available via GitHub Actions on tagged commits (e.g., `v1
 To make the plugin available in Jellyfin's official plugin catalog:
 
 1. Fork and clone the [Jellyfin Plugin Repository](https://github.com/jellyfin/jellyfin-plugin-repo).
-2. Add your plugin metadata following the repository's guidelines (include plugin ID, version, description, etc.).
-3. Create a pull request with your plugin information and release assets.
-4. Once approved, users can install directly from Jellyfin's admin dashboard.
+2. Create a directory for your plugin (e.g., `jellycacheplugin`).
+3. Add your `manifest.json` file to the directory.
+4. Upload the ZIP file to a publicly accessible location (e.g., GitHub Releases).
+5. Update the `sourceUrl` in `manifest.json` to point to the ZIP.
+6. Create a pull request with your plugin information and release assets.
+7. Once approved, users can install directly from Jellyfin's admin dashboard.
 
 ### NuGet Package (Optional)
 

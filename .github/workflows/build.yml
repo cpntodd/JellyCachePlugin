@@ -33,6 +33,13 @@ jobs:
         mkdir release
         cp bin/Release/net9.0/JellyCachePlugin.dll release/
         zip -r JellyCachePlugin.zip release/
+        md5sum JellyCachePlugin.zip | cut -d' ' -f1 > checksum.txt
+
+    - name: Update Manifest
+      run: |
+        CHECKSUM=$(cat checksum.txt)
+        sed -i "s/\"checksum\": \"\"/\"checksum\": \"$CHECKSUM\"/" manifest.json
+        sed -i "s/\"timestamp\": \"[^\"]*\"/\"timestamp\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"/" manifest.json
 
     - name: Create GitHub Release
       if: startsWith(github.ref, 'refs/tags/')
@@ -57,3 +64,14 @@ jobs:
         asset_path: ./JellyCachePlugin.zip
         asset_name: JellyCachePlugin.zip
         asset_content_type: application/zip
+
+    - name: Upload Manifest
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./manifest.json
+        asset_name: manifest.json
+        asset_content_type: application/json
