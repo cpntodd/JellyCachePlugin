@@ -83,6 +83,35 @@ All paths are configurable via the plugin settings.
 2. Restart Jellyfin server (compatible with Jellyfin 10.11.6 using .NET 9).
 3. The plugin will appear in the admin dashboard under Plugins.
 
+## Packaging and Distribution
+
+For easier distribution and "instant use" via Jellyfin's plugin catalog:
+
+### Creating a Release Package
+
+1. Build the plugin in Release mode: `dotnet build -c Release`
+2. The DLL will be in `bin/Release/net9.0/JellyCachePlugin.dll`
+3. Create a ZIP archive containing the DLL and any additional files (e.g., `JellyCachePlugin.zip`)
+
+Automated releases are available via GitHub Actions on tagged commits (e.g., `v1.0.0`).
+
+### Submitting to Jellyfin Plugin Repository
+
+To make the plugin available in Jellyfin's official plugin catalog:
+
+1. Fork and clone the [Jellyfin Plugin Repository](https://github.com/jellyfin/jellyfin-plugin-repo).
+2. Add your plugin metadata following the repository's guidelines (include plugin ID, version, description, etc.).
+3. Create a pull request with your plugin information and release assets.
+4. Once approved, users can install directly from Jellyfin's admin dashboard.
+
+### NuGet Package (Optional)
+
+While not standard for Jellyfin plugins, you can package as NuGet for custom distributions:
+
+1. Update the `.csproj` to include `<PackageId>JellyCachePlugin</PackageId>` and other package metadata.
+2. Run `dotnet pack -c Release` to create a `.nupkg` file.
+3. Publish to a NuGet feed if desired.
+
 ## Usage Guide
 
 - **Accessing the Plugin**: Log into Jellyfin as an admin and navigate to the Dashboard > Plugins > Jelly Cache Manager.
@@ -99,6 +128,30 @@ The plugin supports the following settings:
 - **Enable Alerts**: Whether to show warnings when directories exceed thresholds (default: true).
 - **Alert Threshold**: Percentage of max size to trigger warnings (default: 80%).
 - **Directory Configurations**: Per-directory settings for max size (MB), max age (days), and file type filters.
+
+## Testing
+
+After installation, verify the plugin loads and functions correctly:
+
+1. **Plugin Loading**: Check Jellyfin logs for successful plugin initialization. Look for messages like "Loaded plugin: Jelly Cache Manager".
+2. **Admin UI Access**: Navigate to Dashboard > Plugins > Jelly Cache Manager. The UI should display cache directory information.
+3. **Configuration**: Modify settings and ensure they persist. Test alerts by adjusting thresholds.
+4. **Cleanup Functionality**: Manually trigger cleanup or wait for scheduled runs. Monitor logs for cleanup actions and verify files are deleted safely (e.g., no active transcodes are removed).
+5. **Non-Production Testing**: Always test in a development or staging environment first. Backup data before deploying to production.
+6. **Error Handling**: Simulate edge cases like invalid paths or permission issues, and check for appropriate error logging.
+
+## Updates
+
+Since this plugin is distributed as source code, updates are manual:
+
+1. Pull the latest changes: `git pull origin main`
+2. Rebuild the plugin: `dotnet build -c Release`
+3. Replace the DLL in Jellyfin's plugins directory.
+4. Restart Jellyfin to load the updated plugin.
+
+Alternatively, download pre-built releases from the [GitHub Releases](https://github.com/cpntodd/JellyCachePlugin/releases) page and replace the DLL.
+
+For catalog-installed plugins (if submitted), updates may be available through Jellyfin's admin dashboard automatically.
 
 ## Contributing
 

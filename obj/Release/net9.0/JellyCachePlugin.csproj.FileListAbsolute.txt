@@ -1,0 +1,11 @@
+/home/oddsoul/Documents/projects/Jelly-Cache/JellyCachePlugin/bin/Release/net9.0/JellyCachePlugin.deps.json
+/home/oddsoul/Documents/projects/Jelly-Cache/JellyCachePlugin/bin/Release/net9.0/JellyCachePlugin.dll
+/home/oddsoul/Documents/projects/Jelly-Cache/JellyCachePlugin/bin/Release/net9.0/JellyCachePlugin.pdb
+/home/oddsoul/Documents/projects/Jelly-Cache/JellyCachePlugin/obj/Release/net9.0/JellyCachePlugin.csproj.AssemblyReference.cache
+/home/oddsoul/Documents/projects/Jelly-Cache/JellyCachePlugin/obj/Release/net9.0/JellyCachePlugin.GeneratedMSBuildEditorConfig.editorconfig
+/home/oddsoul/Documents/projects/Jelly-Cache/JellyCachePlugin/obj/Release/net9.0/JellyCachePlugin.csproj.CoreCompileInputs.cache
+/home/oddsoul/Documents/projects/Jelly-Cache/JellyCachePlugin/obj/Release/net9.0/JellyCachePlugin.sourcelink.json
+/home/oddsoul/Documents/projects/Jelly-Cache/JellyCachePlugin/obj/Release/net9.0/JellyCachePlugin.dll
+/home/oddsoul/Documents/projects/Jelly-Cache/JellyCachePlugin/obj/Release/net9.0/refint/JellyCachePlugin.dll
+/home/oddsoul/Documents/projects/Jelly-Cache/JellyCachePlugin/obj/Release/net9.0/JellyCachePlugin.pdb
+/home/oddsoul/Documents/projects/Jelly-Cache/JellyCachePlugin/obj/Release/net9.0/ref/JellyCachePlugin.dll
