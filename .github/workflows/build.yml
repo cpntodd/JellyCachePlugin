@@ -31,7 +31,7 @@ jobs:
     - name: Create Release Archive
       run: |
         mkdir release
-        cp bin/Release/net9.0/JellyCachePlugin.dll release/
+        cp bin/Release/net8.0/JellyCachePlugin.dll release/
         zip -r JellyCachePlugin.zip release/
         md5sum JellyCachePlugin.zip | cut -d' ' -f1 > checksum.txt
 
