@@ -34,7 +34,7 @@ jobs:
     - name: Create Release Archive
       run: |
         cd publish
-        zip -r ../JellyCachePlugin.zip .
+        find . -type f -not -path "./runtimes/*" | zip -j ../JellyCachePlugin.zip -@
         cd ..
         md5sum JellyCachePlugin.zip | cut -d' ' -f1 > checksum.txt
 
