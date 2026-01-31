@@ -7,7 +7,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <OutputType>Library</OutputType>
     <PackageId>JellyCachePlugin</PackageId>
-    <Authors>Your Name</Authors>
+    <Authors>cpntodd</Authors>
     <Description>A Jellyfin plugin for cache management.</Description>
     <Version>1.0.0</Version>
   </PropertyGroup>
