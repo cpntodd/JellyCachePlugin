@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jelly Cache Manager</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .section { margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        button { padding: 10px 15px; margin: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Jelly Cache Manager</h1>
+
+    <div class="section">
+        <h2>Cache Directory Overview</h2>
+        <p>This plugin monitors and manages Jellyfin cache directories automatically.</p>
+        <table id="cacheTable">
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Path</th>
+                    <th>Max Size</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Cache</td>
+                    <td>/var/cache/jellyfin</td>
+                    <td>1000 MB</td>
+                    <td>Monitored</td>
+                </tr>
+                <tr>
+                    <td>Image Cache</td>
+                    <td>/var/cache/jellyfin/images</td>
+                    <td>500 MB</td>
+                    <td>Monitored</td>
+                </tr>
+                <tr>
+                    <td>Program Data</td>
+                    <td>/var/lib/jellyfin</td>
+                    <td>2000 MB</td>
+                    <td>Monitored</td>
+                </tr>
+                <tr>
+                    <td>Logs</td>
+                    <td>/var/log/jellyfin</td>
+                    <td>100 MB</td>
+                    <td>Monitored</td>
+                </tr>
+                <tr>
+                    <td>Metadata</td>
+                    <td>/var/lib/jellyfin/metadata</td>
+                    <td>1500 MB</td>
+                    <td>Monitored</td>
+                </tr>
+                <tr>
+                    <td>Transcodes</td>
+                    <td>/var/cache/jellyfin/transcodes</td>
+                    <td>2000 MB</td>
+                    <td>Monitored</td>
+                </tr>
+                <tr>
+                    <td>Web</td>
+                    <td>/usr/share/jellyfin/web</td>
+                    <td>500 MB</td>
+                    <td>Monitored</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Configuration</h2>
+        <p>Cleanup runs every 24 hours. Alerts enabled with 80% threshold.</p>
+        <p>All settings are configurable in the plugin configuration.</p>
+    </div>
+
+    <div class="section">
+        <h2>Manual Cleanup</h2>
+        <p>Manual cleanup is performed automatically by the background service.</p>
+    </div>
+
+    <div class="section">
+        <h2>Logs</h2>
+        <p>Check Jellyfin logs for cleanup activities.</p>
+    </div>
+</body>
+</html>

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <AssemblyName>JellyCachePlugin</AssemblyName>
     <RootNamespace>JellyCachePlugin</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -16,13 +16,13 @@
     <PackageReference Include="Jellyfin.Controller" Version="10.11.6" />
     <PackageReference Include="Jellyfin.Model" Version="10.11.6" />
     <PackageReference Include="Jellyfin.Common" Version="10.11.6" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
-    <PackageReference Include="System.Text.Json" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.11" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.11" />
+    <PackageReference Include="System.Text.Json" Version="9.0.11" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="UI\**" />
+    <EmbeddedResource Include="Web\**" />
   </ItemGroup>
 
 </Project>

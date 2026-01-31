@@ -1,22 +1,16 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Jellyfin.Api.Controllers;
-using Jellyfin.Api.Helpers;
-using Jellyfin.Data.Entities;
-using Jellyfin.Data.Enums;
 using MediaBrowser.Common.Configuration;
 using MediaBrowser.Common.Plugins;
 using MediaBrowser.Controller;
 using MediaBrowser.Controller.Plugins;
 using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.Serialization;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace JellyCachePlugin
 {
-    public class Plugin : BasePlugin<PluginConfiguration>, IHasWebPages, IHasPluginServices
+    public class Plugin : BasePlugin<PluginConfiguration>, IHasWebPages
     {
         private readonly ILogger<Plugin> _logger;
         private readonly IServerApplicationHost _applicationHost;
@@ -45,21 +39,19 @@ namespace JellyCachePlugin
                 new PluginPageInfo
                 {
                     Name = "JellyCachePlugin",
-                    EmbeddedResourcePath = GetType().Namespace + ".UI.index.html"
+                    EmbeddedResourcePath = GetType().Namespace + ".Web.index.html"
                 }
             };
         }
 
-        public void ConfigureServices(IServiceCollection services)
+        public IPluginServiceRegistrator GetServiceRegistrator()
         {
-            services.AddSingleton<Services.CleanupService>();
-            services.AddHostedService<Services.CacheMonitorService>();
+            return new PluginServiceRegistrator();
         }
 
         public override void UpdateConfiguration(BasePluginConfiguration configuration)
         {
             base.UpdateConfiguration(configuration);
-            // Trigger any necessary updates
         }
     }
 }

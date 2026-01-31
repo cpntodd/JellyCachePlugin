@@ -31,11 +31,11 @@ namespace JellyCachePlugin.Services
         {
             _logger.LogInformation("Starting Cache Monitor Service");
 
-            var plugin = _applicationHost.Plugins.FirstOrDefault(p => p is Plugin) as Plugin;
-            if (plugin == null) return Task.CompletedTask;
+            // var plugin = _applicationHost.Plugins.FirstOrDefault(p => p is Plugin) as Plugin;
+            // if (plugin == null) return Task.CompletedTask;
 
-            var config = plugin.Configuration;
-            var interval = TimeSpan.FromHours(config.CleanupIntervalHours);
+            // var config = plugin.Configuration;
+            var interval = TimeSpan.FromHours(24); // config.CleanupIntervalHours
 
             _timer = new Timer(DoWork, null, TimeSpan.Zero, interval);
 

@@ -23,10 +23,11 @@ namespace JellyCachePlugin.Services
 
         public async Task PerformCleanup()
         {
-            var plugin = _applicationHost.Plugins.FirstOrDefault(p => p is Plugin) as Plugin;
-            if (plugin == null) return;
+            // var plugin = _applicationHost.Plugins.FirstOrDefault(p => p is Plugin) as Plugin;
+            // if (plugin == null) return;
 
-            var config = plugin.Configuration;
+            // var config = plugin.Configuration;
+            var config = new PluginConfiguration(); // default
 
             foreach (var kvp in config.CacheDirectories)
             {
@@ -46,70 +47,73 @@ namespace JellyCachePlugin.Services
 
         private async Task CleanupDirectory(string name, CacheDirectoryConfig config)
         {
-            if (!Directory.Exists(config.Path))
+            await Task.Run(() =>
             {
-                _logger.LogWarning($"Directory {config.Path} does not exist");
-                return;
-            }
-
-            var dirInfo = new DirectoryInfo(config.Path);
-            var files = dirInfo.GetFiles("*", SearchOption.AllDirectories);
-
-            // Filter by age
-            var cutoffDate = DateTime.Now.AddDays(-config.MaxAgeDays);
-            var oldFiles = files.Where(f => f.LastWriteTime < cutoffDate).ToList();
-
-            // Filter by type if specified
-            if (config.FileTypeFilters.Any())
-            {
-                oldFiles = oldFiles.Where(f => config.FileTypeFilters.Contains(f.Extension.ToLower())).ToList();
-            }
-
-            // Calculate current size
-            long currentSize = files.Sum(f => f.Length);
-            long maxSizeBytes = config.MaxSizeMB * 1024 * 1024;
-
-            // If over size, delete oldest files first
-            if (currentSize > maxSizeBytes)
-            {
-                var filesToDelete = files.OrderBy(f => f.LastWriteTime).ToList();
-                long sizeToDelete = currentSize - maxSizeBytes;
-
-                foreach (var file in filesToDelete)
+                if (!Directory.Exists(config.Path))
                 {
-                    if (sizeToDelete <= 0) break;
+                    _logger.LogWarning($"Directory {config.Path} does not exist");
+                    return;
+                }
 
+                var dirInfo = new DirectoryInfo(config.Path);
+                var files = dirInfo.GetFiles("*", SearchOption.AllDirectories);
+
+                // Filter by age
+                var cutoffDate = DateTime.Now.AddDays(-config.MaxAgeDays);
+                var oldFiles = files.Where(f => f.LastWriteTime < cutoffDate).ToList();
+
+                // Filter by type if specified
+                if (config.FileTypeFilters.Any())
+                {
+                    oldFiles = oldFiles.Where(f => config.FileTypeFilters.Contains(f.Extension.ToLower())).ToList();
+                }
+
+                // Calculate current size
+                long currentSize = files.Sum(f => f.Length);
+                long maxSizeBytes = config.MaxSizeMB * 1024 * 1024;
+
+                // If over size, delete oldest files first
+                if (currentSize > maxSizeBytes)
+                {
+                    var filesToDelete = files.OrderBy(f => f.LastWriteTime).ToList();
+                    long sizeToDelete = currentSize - maxSizeBytes;
+
+                    foreach (var file in filesToDelete)
+                    {
+                        if (sizeToDelete <= 0) break;
+
+                        try
+                        {
+                            // Skip active transcodes (simple check: if file is being written to)
+                            if (IsFileLocked(file)) continue;
+
+                            long fileSize = file.Length;
+                            file.Delete();
+                            sizeToDelete -= fileSize;
+                            _logger.LogInformation($"Deleted {file.FullName} to free space");
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogError(ex, $"Failed to delete {file.FullName}");
+                        }
+                    }
+                }
+
+                // Delete old files
+                foreach (var file in oldFiles)
+                {
                     try
                     {
-                        // Skip active transcodes (simple check: if file is being written to)
                         if (IsFileLocked(file)) continue;
-
-                        long fileSize = file.Length;
                         file.Delete();
-                        sizeToDelete -= fileSize;
-                        _logger.LogInformation($"Deleted {file.FullName} to free space");
+                        _logger.LogInformation($"Deleted old file {file.FullName}");
                     }
                     catch (Exception ex)
                     {
-                        _logger.LogError(ex, $"Failed to delete {file.FullName}");
+                        _logger.LogError(ex, $"Failed to delete old file {file.FullName}");
                     }
                 }
-            }
-
-            // Delete old files
-            foreach (var file in oldFiles)
-            {
-                try
-                {
-                    if (IsFileLocked(file)) continue;
-                    file.Delete();
-                    _logger.LogInformation($"Deleted old file {file.FullName}");
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, $"Failed to delete old file {file.FullName}");
-                }
-            }
+            });
         }
 
         private bool IsFileLocked(FileInfo file)
@@ -130,10 +134,12 @@ namespace JellyCachePlugin.Services
 
         public async Task ClearAllCaches()
         {
-            var plugin = _applicationHost.Plugins.FirstOrDefault(p => p is Plugin) as Plugin;
-            if (plugin == null) return;
+            // var plugin = _applicationHost.Plugins.FirstOrDefault(p => p is Plugin) as Plugin;
+            // if (plugin == null) return;
 
-            foreach (var kvp in plugin.Configuration.CacheDirectories)
+            var config = new PluginConfiguration();
+
+            foreach (var kvp in config.CacheDirectories)
             {
                 await ClearCache(kvp.Key);
             }
@@ -141,28 +147,34 @@ namespace JellyCachePlugin.Services
 
         public async Task ClearCache(string category)
         {
-            var plugin = _applicationHost.Plugins.FirstOrDefault(p => p is Plugin) as Plugin;
-            if (plugin == null || !plugin.Configuration.CacheDirectories.ContainsKey(category)) return;
-
-            var config = plugin.Configuration.CacheDirectories[category];
-            if (!Directory.Exists(config.Path)) return;
-
-            var dirInfo = new DirectoryInfo(config.Path);
-            var files = dirInfo.GetFiles("*", SearchOption.AllDirectories);
-
-            foreach (var file in files)
+            await Task.Run(() =>
             {
-                try
+                // var plugin = _applicationHost.Plugins.FirstOrDefault(p => p is Plugin) as Plugin;
+                // if (plugin == null || !plugin.Configuration.CacheDirectories.ContainsKey(category)) return;
+
+                var config = new PluginConfiguration();
+                if (!config.CacheDirectories.ContainsKey(category)) return;
+
+                var dirConfig = config.CacheDirectories[category];
+                if (!Directory.Exists(dirConfig.Path)) return;
+
+                var dirInfo = new DirectoryInfo(dirConfig.Path);
+                var files = dirInfo.GetFiles("*", SearchOption.AllDirectories);
+
+                foreach (var file in files)
                 {
-                    if (IsFileLocked(file)) continue;
-                    file.Delete();
-                    _logger.LogInformation($"Manually deleted {file.FullName}");
+                    try
+                    {
+                        if (IsFileLocked(file)) continue;
+                        file.Delete();
+                        _logger.LogInformation($"Manually deleted {file.FullName}");
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, $"Failed to manually delete {file.FullName}");
+                    }
                 }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, $"Failed to manually delete {file.FullName}");
-                }
-            }
+            });
         }
     }
 }
